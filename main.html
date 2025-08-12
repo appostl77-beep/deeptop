@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RateHub - Пользовательские рейтинги</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .sticky-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+        }
+        
+        .description-clamp {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .gallery-thumbnail {
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-thumbnail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .rating-item {
+            transition: all 0.3s ease;
+        }
+        
+        .rating-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <div class="w-10 h-10 rounded-lg bg-primary-500 flex items-center justify-center text-white font-bold text-xl">RH</div>
+                        <span class="ml-2 text-xl font-semibold text-primary-700">RateHub</span>
+                    </a>
+                </div>
+                
+                <div class="flex-1 max-w-2xl px-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Поиск рейтингов..." class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <button class="absolute right-0 top-0 h-full px-3 text-gray-500 hover:text-primary-600">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <button class="flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">
+                        <i class="fas fa-plus mr-2"></i>
+                        <span>Добавить</span>
+                    </button>
+                    <button class="flex items-center px-4 py-2 border border-primary-500 text-primary-500 rounded-lg hover:bg-primary-50 transition">
+                        <i class="fas fa-user mr-2"></i>
+                        <span>Войти</span>
+                    </button>
+                </div>
+            </div>
+            
+            <nav class="mt-4">
+                <ul class="flex flex-wrap gap-4 md:gap-6 text-sm md:text-base">
+                    <li><a href="index.html" class="text-primary-600 font-medium pb-2 border-b-2 border-primary-500">Главная</a></li>
+                    <li><a href="category.html" class="text-gray-600 hover:text-primary-500 transition">Топы</a></li>
+                    <li><a href="fullstory.html" class="text-gray-600 hover:text-primary-500 transition">Категории</a></li>
+                    <li><a href="ratings.html" class="text-gray-600 hover:text-primary-500 transition">Рейтинги</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary-500 transition">Новости</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary-500 transition">О проекте</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content - Different for each page -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Home Page Content -->
+        <div id="home-page" class="flex flex-col lg:flex-row gap-8">
+            <!-- Sidebar -->
+            <aside class="lg:w-1/4 flex flex-col gap-6 sticky-sidebar">
+                <!-- Telegram Widget -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Наш Telegram</h3>
+                    <div class="flex items-center justify-between bg-primary-50 p-3 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center text-white">
+                                <i class="fab fa-telegram"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium">RateHub News</p>
+                                <p class="text-xs text-gray-500">2.5K подписчиков</p>
+                            </div>
+                        </div>
+                        <button class="px-3 py-1 bg-primary-500 text-white text-xs rounded hover:bg-primary-600 transition">Подписаться</button>
+                    </div>
+                </div>
+                
+                <!-- Rating Menu -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Популярные рейтинги</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="flex items-center text-gray-700 hover:text-primary-500 transition"><i class="fas fa-chevron-right text-xs text-primary-400 mr-2"></i> Топ 10 смартфонов 2023</a></li>
+                        <li><a href="#" class="flex items-center text-gray-700 hover:text-primary-500 transition"><i class="fas fa-chevron-right text-xs text-primary-400 mr-2"></i> Лучшие ноутбуки для работы</a></li>
+                        <li><a href="#" class="flex items-center text-gray-700 hover:text-primary-500 transition"><i class="fas fa-chevron-right text-xs text-primary-400 mr-2"></i> Рейтинг фильмов 2023 года</a></li>
+                        <li><a href="#" class="flex items-center text-gray-700 hover:text-primary-500 transition"><i class="fas fa-chevron-right text-xs text-primary-400 mr-2"></i> Топ игр для PlayStation 5</a></li>
+                        <li><a href="#" class="flex items-center text-gray-700 hover:text-primary-500 transition"><i class="fas fa-chevron-right text-xs text-primary-400 mr-2"></i> Лучшие книги года</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Site Sections -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Разделы сайта</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="#" class="p-2 bg-gray-50 hover:bg-primary-50 rounded text-center text-sm transition">
+                            <i class="fas fa-mobile-alt text-primary-500 mb-1"></i>
+                            <p>Техника</p>
+                        </a>
+                        <a href="#" class="p-2 bg-gray-50 hover:bg-primary-50 rounded text-center text-sm transition">
+                            <i class="fas fa-film text-primary-500 mb-1"></i>
+                            <p>Кино</p>
+                        </a>
+                        <a href="#" class="p-2 bg-gray-50 hover:bg-primary-50 rounded text-center text-sm transition">
+                            <i class="fas fa-gamepad text-primary-500 mb-1"></i>
+                            <p>Игры</p>
+                        </a>
+                        <a href="#" class="p-2 bg-gray-50 hover:bg-primary-50 rounded text-center text-sm transition">
+                            <i class="fas fa-book text-primary-500 mb-1"></i>
+                            <p>Книги</p>
+                        </a>
+                        <a href="#" class="p-2 bg-gray-50 hover:bg-primary-50 rounded text-center text-sm transition">
+                            <i class="fas fa-utensils text-primary-500 mb-1"></i>
+                            <p>Еда</p>
+                        </a>
+                        <a href="#" class="p-2 bg-gray-50 hover:bg-primary-50 rounded text-center text-sm transition">
+                            <i class="fas fa-car text-primary-500 mb-1"></i>
+                            <p>Авто</p>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- Main Content -->
+            <div class="lg:w-3/4">
+                <section class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Популярные рейтинги</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Rating Card 1 -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition">
+                            <div class="h-40 bg-gradient-to-r from-primary-400 to-primary-600 flex items-center justify-center text-white">
+                                <i class="fas fa-mobile-alt text-5xl"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2">Топ 10 смартфонов 2023</h3>
+                                <p class="text-gray-600 text-sm mb-3">Рейтинг лучших смартфонов по соотношению цена/качество</p>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="bg-primary-100 text-primary-800 px-2 py-1 rounded">Техника</span>
+                                    <span class="text-gray-500">1.2K голосов</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Rating Card 2 -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition">
+                            <div class="h-40 bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center text-white">
+                                <i class="fas fa-film text-5xl"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2">Лучшие фильмы года</h3>
+                                <p class="text-gray-600 text-sm mb-3">Самые популярные и высокооцененные фильмы 2023 года</p>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">Кино</span>
+                                    <span class="text-gray-500">856 голосов</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Rating Card 3 -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition">
+                            <div class="h-40 bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center text-white">
+                                <i class="fas fa-gamepad text-5xl"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2">Игры для PS5</h3>
+                                <p class="text-gray-600 text-sm mb-3">Лучшие игры для PlayStation 5 по версии игроков</p>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded">Игры</span>
+                                    <span class="text-gray-500">1.5K голосов</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Новые рейтинги</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- New Rating Card 1 -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition">
+                            <div class="h-40 bg-gradient-to-r from-green-400 to-green-600 flex items-center justify-center text-white">
+                                <i class="fas fa-laptop text-5xl"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2">Ноутбуки для работы</h3>
+                                <p class="text-gray-600 text-sm mb-3">Лучшие ноутбуки для офисной работы и бизнеса</p>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded">Техника</span>
+                                    <span class="text-gray-500">342 голоса</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- New Rating Card 2 -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition">
+                            <div class="h-40 bg-gradient-to-r from-yellow-400 to-yellow-600 flex items-center justify-center text-white">
+                                <i class="fas fa-book text-5xl"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2">Книжные новинки</h3>
+                                <p class="text-gray-600 text-sm mb-3">Самые ожидаемые книжные новинки этого сезона</p>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">Книги</span>
+                                    <span class="text-gray-500">198 голосов</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- New Rating Card 3 -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition">
+                            <div class="h-40 bg-gradient-to-r from-red-400 to-red-600 flex items-center justify-center text-white">
+                                <i class="fas fa-car text-5xl"></i>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2">Автомобили года</h3>
+                                <p class="text-gray-600 text-sm mb-3">Лучшие новые автомобили 2023 года в разных категориях</p>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="bg-red-100 text-red-800 px-2 py-1 rounded">Авто</span>
+                                    <span class="text-gray-500">512 голосов</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        
+        <!-- Category Page Content (hidden by default) -->
+        <div id="category-page" class="hidden">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Категории рейтингов</h1>
+                <p class="text-gray-600">Выберите интересующую вас категорию для просмотра рейтингов</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Category 1 -->
+                <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition">
+                    <div class="h-40 bg-primary-100 flex items-center justify-center">
+                        <i class="fas fa-mobile-alt text-5xl text-primary-600"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-2">Техника и гаджеты</h3>
+                        <p class="text-gray-600 text-sm mb-3">Смартфоны, ноутбуки, планшеты и другие устройства</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-500">24 рейтинга</span>
+                            <a href="ratings.html" class="text-primary-500 hover:text-primary-700 transition">Смотреть →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Category 2 -->
+                <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition">
+                    <div class="h-40 bg-blue-100 flex items-center justify-center">
+                        <i class="fas fa-film text-5xl text-blue-600"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-2">Фильмы и сериалы</h3>
+                        <p class="text-gray-600 text-sm mb-3">Рейтинги фильмов, сериалов и мультфильмов</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-500">18 рейтингов</span>
+                            <a href="ratings.html" class="text-primary-500 hover:text-primary-700 transition">Смотреть →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Category 3 -->
+                <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition">
+                    <div class="h-40 bg-purple-100 flex items-center justify-center">
+                        <i class="fas fa-gamepad text-5xl text-purple-600"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-2">Игры</h3>
+                        <p class="text-gray-600 text-sm mb-3">Компьютерные, консольные и мобильные игры</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-500">15 рейтингов</span>
+                            <a href="ratings.html" class="text-primary-500 hover:text-primary-700 transition">Смотреть →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Category 4 -->
+                <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition">
+                    <div class="h-40 bg-green-100 flex items-center justify-center">
+                        <i class="fas fa-book text-5xl text-green-600"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-2">Книги</h3>
+                        <p class="text-gray-600 text-sm mb-3">Художественная и научная литература</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-500">12 рейтингов</span>
+                            <a href="ratings.html" class="text-primary-500 hover:text-primary-700 transition">Смотреть →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Category 5 -->
+                <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition">
+                    <div class="h-40 bg-yellow-100 flex items-center justify-center">
+                        <i class="fas fa-utensils text-5xl text-yellow-600"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-2">Еда и напитки</h3>
+                        <p class="text-gray-600 text-sm mb-3">Рестораны, рецепты, продукты питания</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-500">8 рейтингов</span>
+                            <a href="ratings.html" class="text-primary-500 hover:text-primary-700 transition">Смотреть →</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Category 6 -->
+                <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition">
+                    <div class="h-40 bg-red-100 flex items-center justify-center">
+                        <i class="fas fa-car text-5xl text-red-600"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-2">Автомобили</h3>
+                        <p class="text-gray-600 text-sm mb-3">Легковые и грузовые автомобили, мотоциклы</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-500">10 рейтингов</span>
+                            <a href="ratings.html" class="text-primary-500 hover:text-primary-700 transition">Смотреть →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ratings Page Content (hidden by default) -->
+        <div id="ratings-page" class="hidden">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                <div>
+                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                        <a href="index.html" class="text-primary-500 hover:underline">Главная</a>
+                        <span class="mx-2">/</span>
+                        <a href="category.html" class="text-primary-500 hover:underline">Техника</a>
+                        <span class="mx-2">/</span>
+                        <span>Топ 10 смартфонов 2023</span>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-800">Топ 10 смартфонов 2023</h1>
+                </div>
+                
+                <div class="mt-4 md:mt-0 flex space-x-2">
+                    <button class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+                        <i class="fab fa-facebook-f text-blue-600"></i>
+                    </button>
+                    <button class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+                        <i class="fab fa-twitter text-blue-400"></i>
+                    </button>
+                    <button class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+                        <i class="fab fa-vk text-blue-700"></i>
+                    </button>
+                    <button class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+                        <i class="fab fa-telegram-plane text-blue-500"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <div class="description-clamp" id="description-content">
+                    <p>Рейтинг лучших смартфонов 2023 года по мнению экспертов и пользователей. В топ вошли флагманские модели от ведущих производителей, которые сочетают в себе передовые технологии, отличное качество сборки и инновационные функции. Мы учитывали производительность, качество камер, время автономной работы, дизайн и дополнительные возможности. В рейтинге представлены устройства с разным ценовым диапазоном, чтобы каждый мог найти оптимальный вариант.</p>
+                </div>
+                <button onclick="toggleDescription()" id="toggle-description" class="mt-2 text-primary-500 hover:text-primary-700 text-sm font-medium transition">Показать полностью</button>
+            </div>
+            
+            <div class="mb-6">
+                <div class="flex flex-wrap gap-2">
+                    <button class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">По рейтингу</button>
+                    <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">По просмотрам</button>
+                    <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">По отзывам</button>
+                    <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">По дате</button>
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Rating Item 1 -->
+                <div class="bg-white rounded-lg shadow p-4 rating-item">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex items-start">
+                            <span class="text-2xl font-bold text-gray-400 mr-4">1</span>
+                            <img src="https://via.placeholder.com/100" alt="Smartphone" class="w-24 h-24 object-cover rounded-lg">
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-lg">iPhone 15 Pro Max</h3>
+                            <p class="text-gray-600 text-sm mb-2">Флагманский смартфон Apple с процессором A17 Pro, камерой 48 МП и дисплеем ProMotion</p>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="bg-primary-100 text-primary-800 px-2 py-1 rounded text-xs">Apple</span>
+                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">256 ГБ</span>
+                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">6.7"</span>
+                                <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-comment-alt mr-1"></i> 342 отзыва</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center justify-center w-16">
+                            <button class="text-green-500 hover:text-green-700 transition">
+                                <i class="fas fa-chevron-up text-xl"></i>
+                            </button>
+                            <span class="font-bold text-lg my-1">9.85</span>
+                            <button class="text-red-500 hover:text-red-700 transition">
+                                <i class="fas fa-chevron-down text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rating Item 2 -->
+                <div class="bg-white rounded-lg shadow p-4 rating-item">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex items-start">
+                            <span class="text-2xl font-bold text-gray-400 mr-4">2</span>
+                            <img src="https://via.placeholder.com/100" alt="Smartphone" class="w-24 h-24 object-cover rounded-lg">
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-lg">Samsung Galaxy S23 Ultra</h3>
+                            <p class="text-gray-600 text-sm mb-2">Мощный Android-смартфон с S Pen, камерой 200 МП и экраном Dynamic AMOLED 2X</p>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">Samsung</span>
+                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">512 ГБ</span>
+                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">6.8"</span>
+                                <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-comment-alt mr-1"></i> 298 отзывов</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center justify-center w-16">
+                            <button class="text-green-500 hover:text-green-700 transition">
+                                <i class="fas fa-chevron-up text-xl"></i>
+                            </button>
+                            <span class="font-bold text-lg my-1">9.72</span>
+                            <button class="text-red-500 hover:text-red-700 transition">
+                                <i class="fas fa-chevron-down text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rating Item 3 -->
+                <div class="bg-white rounded-lg shadow p-4 rating-item">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex items-start">
+                            <span class="text-2xl font-bold text-gray-400 mr-4">3</span>
+                            <img src="https://via.placeholder.com/100" alt="Smartphone" class="w-24 h-24 object-cover rounded-lg">
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-lg">Google Pixel 8 Pro</h3>
+                            <p class="text-gray-600 text-sm mb-2">Смартфон с лучшей камерой по версии DxOMark и чипом Tensor G3</p>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">Google</span>
+                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">128 ГБ</span>
+                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">6.7"</span>
+                                <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-comment-alt mr-1"></i> 187 отзывов</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center justify-center w-16">
+                            <button class="text-green-500 hover:text-green-700 transition">
+                                <i class="fas fa-chevron-up text-xl"></i>
+                            </button>
+                            <span class="font-bold text-lg my-1">9.58</span>
+                            <button class="text-red-500 hover:text-red-700 transition">
+                                <i class="fas fa-chevron-down text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rating Item 4 -->
+                <div class="bg-white rounded-lg shadow p-4 rating-item">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex items-start">
+                            <span class="text-2xl font-bold text-gray-400 mr-4">4</span>
+                            <img src="https://via.placeholder.com/100" alt="Smartphone" class="w-24 h-24 object-cover rounded-lg">
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-lg">Xiaomi 13 Pro</h3>
+                            <p class="text-gray-600 text-sm mb-2">Флагман Xiaomi с камерой Leica, Snapdragon 8 Gen 2 и зарядкой 120 Вт</p>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-xs">Xiaomi</span>
+                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">256 ГБ</span>
+                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">6.73"</span>
+                                <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-comment-alt mr-1"></i> 156 отзывов</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center justify-center w-16">
+                            <button class="text-green-500 hover:text-green-700 transition">
+                                <i class="fas fa-chevron-up text-xl"></i>
+                            </button>
+                            <span class="font-bold text-lg my-1">9.42</span>
+                            <button class="text-red-500 hover:text-red-700 transition">
+                                <i class="fas fa-chevron-down text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center mt-8">
+                <button class="px-6 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Показать еще</button>
+            </div>
+        </div>
+        
+        <!-- Item Page Content (hidden by default) -->
+        <div id="item-page" class="hidden">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                <div>
+                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                        <a href="index.html" class="text-primary-500 hover:underline">Главная</a>
+                        <span class="mx-2">/</span>
+                        <a href="category.html" class="text-primary-500 hover:underline">Техника</a>
+                        <span class="mx-2">/</span>
+                        <a href="ratings.html" class="text-primary-500 hover:underline">Топ 10 смартфонов 2023</a>
+                        <span class="mx-2">/</span>
+                        <span>iPhone 15 Pro Max</span>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-800">iPhone 15 Pro Max</h1>
+                </div>
+                
+                <div class="mt-4 md:mt-0 flex space-x-2">
+                    <button class="flex items-center px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
+                        <i class="far fa-heart mr-2 text-red-500"></i>
+                        <span>В избранное</span>
+                    </button>
+                    <div class="flex space-x-2">
+                        <button class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+                            <i class="fab fa-facebook-f text-blue-600"></i>
+                        </button>
+                        <button class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+                            <i class="fab fa-twitter text-blue-400"></i>
+                        </button>
+                        <button class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+                            <i class="fab fa-vk text-blue-700"></i>
+                        </button>
+                        <button class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+                            <i class="fab fa-telegram-plane text-blue-500"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row gap-8 mb-8">
+                <div class="lg:w-1/2">
+                    <div class="bg-white rounded-lg shadow p-4 mb-4">
+                        <img src="https://via.placeholder.com/600" alt="iPhone 15 Pro Max" class="w-full h-auto rounded-lg mb-4">
+                        <div class="flex gap-2 overflow-x-auto pb-2">
+                            <img src="https://via.placeholder.com/100" alt="Thumbnail 1" class="w-16 h-16 object-cover rounded-lg gallery-thumbnail cursor-pointer">
+                            <img src="https://via.placeholder.com/100" alt="Thumbnail 2" class="w-16 h-16 object-cover rounded-lg gallery-thumbnail cursor-pointer">
+                            <img src="https://via.placeholder.com/100" alt="Thumbnail 3" class="w-16 h-16 object-cover rounded-lg gallery-thumbnail cursor-pointer">
+                            <img src="https://via.placeholder.com/100" alt="Thumbnail 4" class="w-16 h-16 object-cover rounded-lg gallery-thumbnail cursor-pointer">
+                            <img src="https://via.placeholder.com/100" alt="Thumbnail 5" class="w-16 h-16 object-cover rounded-lg gallery-thumbnail cursor-pointer">
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-xl font-semibold mb-4">Голосование</h3>
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">Дизайн</span>
+                                <span class="text-sm font-medium text-gray-700">9.8</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-primary-500 h-2.5 rounded-full" style="width: 98%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">Производительность</span>
+                                <span class="text-sm font-medium text-gray-700">9.9</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-primary-500 h-2.5 rounded-full" style="width: 99%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">Камера</span>
+                                <span class="text-sm font-medium text-gray-700">9.7</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-primary-500 h-2.5 rounded-full" style="width: 97%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">Автономность</span>
+                                <span class="text-sm font-medium text-gray-700">9.5</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-primary-500 h-2.5 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-6">
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-primary-600">9.85</div>
+                                <div class="text-sm text-gray-500">Общий рейтинг</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-gray-800">342</div>
+                                <div class="text-sm text-gray-500">Голосов</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-gray-800">1</div>
+                                <div class="text-sm text-gray-500">Место в топе</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h3 class="text-xl font-semibold mb-4">Описание</h3>
+                        <p class="text-gray-700 mb-4">iPhone 15 Pro Max — флагманский смартфон Apple 2023 года с титановым корпусом, процессором A17 Pro и камерой 48 МП. Устройство получило новый дизайн, улучшенную автономность и поддержку USB-C.</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <h4 class="font-medium text-gray-800 mb-2">Основные характеристики</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li><span class="font-medium">Экран:</span> 6.7" Super Retina XDR</li>
+                                    <li><span class="font-medium">Процессор:</span> Apple A17 Pro</li>
+                                    <li><span class="font-medium">Память:</span> 256/512 ГБ</li>
+                                    <li><span class="font-medium">ОС:</span> iOS 17</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 mb-2">Камера</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li><span class="font-medium">Основная:</span> 48 МП + 12 МП + 12 МП</li>
+                                    <li><span class="font-medium">Фронтальная:</span> 12 МП</li>
+                                    <li><span class="font-medium">Видео:</span> 4K@60fps</li>
+                                    <li><span class="font-medium">Zoom:</span> 5x оптический</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-primary-100 text-primary-800 px-3 py-1 rounded-full text-sm">Apple</span>
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">Флагман</span>
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">2023</span>
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">iOS</span>
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">6.7"</span>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-3">
+                            <button class="flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">
+                                <i class="fas fa-thumbs-up mr-2"></i>
+                                <span>Голосовать</span>
+                            </button>
+                            <button class="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
+                                <i class="fas fa-share-alt mr-2"></i>
+                                <span>Поделиться</span>
+                            </button>
+                            <button class="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
+                                <i class="fas fa-comment-alt mr-2"></i>
+                                <span>Комментировать</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-xl font-semibold mb-4">Где купить</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:border-primary-400 transition">
+                                <div class="flex items-center">
+                                    <img src="https://via.placeholder.com/40" alt="Store" class="w-10 h-10 rounded-full mr-3">
+                                    <div>
+                                        <p class="font-medium">Apple Store</p>
+                                        <p class="text-sm text-gray-500">Официальный магазин</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-primary-600">129 990 ₽</p>
+                                    <a href="#" class="text-sm text-primary-500 hover:underline">Перейти →</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:border-primary-400 transition">
+                                <div class="flex items-center">
+                                    <img src="https://via.placeholder.com/40" alt="Store" class="w-10 h-10 rounded-full mr-3">
+                                    <div>
+                                        <p class="font-medium">MVideo</p>
+                                        <p class="text-sm text-gray-500">Сеть магазинов</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-primary-600">127 990 ₽</p>
+                                    <a href="#" class="text-sm text-primary-500 hover:underline">Перейти →</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:border-primary-400 transition">
+                                <div class="flex items-center">
+                                    <img src="https://via.placeholder.com/40" alt="Store" class="w-10 h-10 rounded-full mr-3">
+                                    <div>
+                                        <p class="font-medium">Citilink</p>
+                                        <p class="text-sm text-gray-500">Интернет-магазин</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-primary-600">125 490 ₽</p>
+                                    <a href="#" class="text-sm text-primary-500 hover:underline">Перейти →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow mb-8">
+                <div class="border-b border-gray-200">
+                    <nav class="flex -mb-px">
+                        <button onclick="openTab(event, 'tab-specs')" class="tab-button py-4 px-6 text-center border-b-2 font-medium text-sm border-primary-500 text-primary-600">Характеристики</button>
+                        <button onclick="openTab(event, 'tab-ratings')" class="tab-button py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Рейтинги</button>
+                        <button onclick="openTab(event, 'tab-comments')" class="tab-button py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Комментарии</button>
+                        <button onclick="openTab(event, 'tab-video')" class="tab-button py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Видео</button>
+                        <button onclick="openTab(event, 'tab-links')" class="tab-button py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Ссылки</button>
+                    </nav>
+                </div>
+                
+                <div class="p-6">
+                    <div id="tab-specs" class="tab-content active">
+                        <h4 class="text-lg font-semibold mb-4">Полные характеристики</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h5 class="font-medium text-gray-800 mb-3">Основные</h5>
+                                <table class="w-full text-sm">
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Модель</td>
+                                        <td class="py-2 font-medium">iPhone 15 Pro Max</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Год выпуска</td>
+                                        <td class="py-2 font-medium">2023</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Операционная система</td>
+                                        <td class="py-2 font-medium">iOS 17</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Корпус</td>
+                                        <td class="py-2 font-medium">Титан, защита IP68</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-medium text-gray-800 mb-3">Экран</h5>
+                                <table class="w-full text-sm">
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Тип</td>
+                                        <td class="py-2 font-medium">Super Retina XDR OLED</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Диагональ</td>
+                                        <td class="py-2 font-medium">6.7 дюймов</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Разрешение</td>
+                                        <td class="py-2 font-medium">2796 × 1290 пикселей</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Частота обновления</td>
+                                        <td class="py-2 font-medium">120 Гц (ProMotion)</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-medium text-gray-800 mb-3">Производительность</h5>
+                                <table class="w-full text-sm">
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Процессор</td>
+                                        <td class="py-2 font-medium">Apple A17 Pro</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Графика</td>
+                                        <td class="py-2 font-medium">Apple GPU (6 ядер)</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Оперативная память</td>
+                                        <td class="py-2 font-medium">8 ГБ</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Память</td>
+                                        <td class="py-2 font-medium">256/512 ГБ/1 ТБ</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-medium text-gray-800 mb-3">Камера</h5>
+                                <table class="w-full text-sm">
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Основная камера</td>
+                                        <td class="py-2 font-medium">48 МП + 12 МП + 12 МП</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Фронтальная камера</td>
+                                        <td class="py-2 font-medium">12 МП</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Видеосъемка</td>
+                                        <td class="py-2 font-medium">4K@60fps, HDR</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="py-2 text-gray-500">Zoom</td>
+                                        <td class="py-2 font-medium">5x оптический, 15x цифровой</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="tab-ratings" class="tab-content">
+                        <h4 class="text-lg font-semibold mb-4">Рейтинги с этим товаром</h4>
+                        <div class="space-y-4">
+                            <div class="flex items-start p-3 border border-gray-200 rounded-lg hover:border-primary-400 transition">
+                                <div class="w-16 h-16 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-mobile-alt text-primary-600 text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h5 class="font-medium">Топ 10 смартфонов 2023</h5>
+                                    <p class="text-sm text-gray-600 mb-2">Рейтинг лучших смартфонов года по мнению экспертов и пользователей</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="bg-primary-100 text-primary-800 px-2 py-1 rounded text-xs">Техника</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-star mr-1 text-yellow-400"></i> 9.85</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-comment-alt mr-1"></i> 342 отзыва</span>
+                                    </div>
+                                </div>
+                                <div class="text-primary-500 ml-4">
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start p-3 border border-gray-200 rounded-lg hover:border-primary-400 transition">
+                                <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-camera text-blue-600 text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h5 class="font-medium">Лучшие камерофоны 2023</h5>
+                                    <p class="text-sm text-gray-600 mb-2">Смартфоны с лучшими камерами по версии DxOMark</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">Техника</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-star mr-1 text-yellow-400"></i> 9.7</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-comment-alt mr-1"></i> 187 отзывов</span>
+                                    </div>
+                                </div>
+                                <div class="text-primary-500 ml-4">
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="tab-comments" class="tab-content">
+                        <h4 class="text-lg font-semibold mb-4">Комментарии (23)</h4>
+                        <div class="mb-6">
+                            <textarea class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" rows="3" placeholder="Напишите ваш комментарий..."></textarea>
+                            <div class="flex justify-end mt-2">
+                                <button class="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">Отправить</button>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <!-- Comment 1 -->
+                            <div class="flex items-start">
+                                <img src="https://via.placeholder.com/40" alt="User" class="w-10 h-10 rounded-full mr-3">
+                                <div class="flex-1">
+                                    <div class="bg-gray-50 rounded-lg p-4">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div>
+                                                <span class="font-medium">Алексей Петров</span>
+                                                <span class="text-xs text-gray-500 ml-2">2 дня назад</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <span class="text-yellow-400 mr-1"><i class="fas fa-star"></i></span>
+                                                <span class="font-medium">5.0</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-gray-700">Отличный смартфон! Камера просто потрясающая, батарея держит долго. Единственное - тяжеловат, но к этому быстро привыкаешь.</p>
+                                        <div class="flex items-center mt-3 text-sm text-gray-500">
+                                            <button class="flex items-center mr-4 hover:text-primary-500 transition">
+                                                <i class="far fa-thumbs-up mr-1"></i>
+                                                <span>12</span>
+                                            </button>
+                                            <button class="flex items-center mr-4 hover:text-primary-500 transition">
+                                                <i class="far fa-thumbs-down mr-1"></i>
+                                                <span>2</span>
+                                            </button>
+                                            <button class="hover:text-primary-500 transition">Ответить</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Reply -->
+                                    <div class="flex items-start mt-4 ml-10">
+                                        <img src="https://via.placeholder.com/32" alt="User" class="w-8 h-8 rounded-full mr-3">
+                                        <div class="flex-1">
+                                            <div class="bg-gray-50 rounded-lg p-3">
+                                                <div class="flex justify-between items-start mb-1">
+                                                    <div>
+                                                        <span class="font-medium">Иван Сидоров</span>
+                                                        <span class="text-xs text-gray-500 ml-2">1 день назад</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-gray-700 text-sm">Согласен насчёт камеры, но вес для меня не проблема. Главное - отличный экран и плавность интерфейса.</p>
+                                                <div class="flex items-center mt-2 text-xs text-gray-500">
+                                                    <button class="flex items-center mr-3 hover:text-primary-500 transition">
+                                                        <i class="far fa-thumbs-up mr-1"></i>
+                                                        <span>5</span>
+                                                    </button>
+                                                    <button class="flex items-center hover:text-primary-500 transition">
+                                                        <i class="far fa-thumbs-down mr-1"></i>
+                                                        <span>0</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Comment 2 -->
+                            <div class="flex items-start">
+                                <img src="https://via.placeholder.com/40" alt="User" class="w-10 h-10 rounded-full mr-3">
+                                <div class="flex-1">
+                                    <div class="bg-gray-50 rounded-lg p-4">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div>
+                                                <span class="font-medium">Мария Иванова</span>
+                                                <span class="text-xs text-gray-500 ml-2">5 дней назад</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <span class="text-yellow-400 mr-1"><i class="fas fa-star"></i></span>
+                                                <span class="font-medium">4.5</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-gray-700">Купила неделю назад. Очень довольна, но цена кусается. Камера действительно на уровне, но не уверена, что стоит таких денег. Может, подождать скидок?</p>
+                                        <div class="flex items-center mt-3 text-sm text-gray-500">
+                                            <button class="flex items-center mr-4 hover:text-primary-500 transition">
+                                                <i class="far fa-thumbs-up mr-1"></i>
+                                                <span>8</span>
+                                            </button>
+                                            <button class="flex items-center mr-4 hover:text-primary-500 transition">
+                                                <i class="far fa-thumbs-down mr-1"></i>
+                                                <span>3</span>
+                                            </button>
+                                            <button class="hover:text-primary-500 transition">Ответить</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">Показать больше комментариев</button>
+                    </div>
+                    
+                    <div id="tab-video" class="tab-content">
+                        <h4 class="text-lg font-semibold mb-4">Видеообзоры</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <div class="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg overflow-hidden mb-2">
+                                    <img src="https://via.placeholder.com/800x450" alt="Video" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <button class="w-16 h-16 bg-white bg-opacity-75 rounded-full flex items-center justify-center hover:bg-opacity-100 transition">
+                                            <i class="fas fa-play text-primary-600 text-xl"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <h5 class="font-medium">Обзор iPhone 15 Pro Max от iJustine</h5>
+                                <p class="text-sm text-gray-600">12K просмотров · 3 дня назад</p>
+                            </div>
+                            
+                            <div>
+                                <div class="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg overflow-hidden mb-2">
+                                    <img src="https://via.placeholder.com/800x450" alt="Video" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <button class="w-16 h-16 bg-white bg-opacity-75 rounded-full flex items-center justify-center hover:bg-opacity-100 transition">
+                                            <i class="fas fa-play text-primary-600 text-xl"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <h5 class="font-medium">Тестирование камеры iPhone 15 Pro Max</h5>
+                                <p class="text-sm text-gray-600">8.5K просмотров · 1 неделя назад</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="tab-links" class="tab-content">
+                        <h4 class="text-lg font-semibold mb-4">Полезные ссылки</h4>
+                        <div class="space-y-3">
+                            <a href="#" class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-primary-400 transition">
+                                <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-globe text-primary-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h5 class="font-medium">Официальный сайт Apple</h5>
+                                    <p class="text-sm text-gray-600">apple.com/iphone-15-pro</p>
+                                </div>
+                                <i class="fas fa-external-link-alt text-gray-400"></i>
+                            </a>
+                            
+                            <a href="#" class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-primary-400 transition">
+                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fab fa-wikipedia-w text-blue-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h5 class="font-medium">Страница в Википедии</h5>
+                                    <p class="text-sm text-gray-600">wikipedia.org/wiki/IPhone_15_Pro</p>
+                                </div>
+                                <i class="fas fa-external-link-alt text-gray-400"></i>
+                            </a>
+                            
+                            <a href="#" class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-primary-400 transition">
+                                <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fab fa-youtube text-red-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h5 class="font-medium">Канал обзоров на YouTube</h5>
+                                    <p class="text-sm text-gray-600">youtube.com/c/iPhoneReviews</p>
+                                </div>
+                                <i class="fas fa-external-link-alt text-gray-400"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">О проекте</h3>
+                    <p class="text-gray-400 text-sm">RateHub — это платформа пользовательских рейтингов, где вы можете найти, оценить и обсудить лучшие товары, услуги и медиа.</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Поделиться</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:bg-blue-800 transition">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition">
+                            <i class="fab fa-telegram-plane"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Контакты</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2 text-primary-400"></i>
+                            <a href="mailto:contact@ratehub.ru" class="hover:text-white transition">contact@ratehub.ru</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-telegram mr-2 text-primary-400"></i>
+                            <a href="#" class="hover:text-white transition">@ratehub_support</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-400">
+                <p>© 2023 RateHub. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+       
+</html>

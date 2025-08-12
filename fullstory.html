@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Топ 10 смартфонов 2023 | RateHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+
+        function openTab(evt, tabName) {
+            // Hide all tab contents
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+
+            // Remove active class from all tab links
+            const tabLinks = document.getElementsByClassName("tab-link");
+            for (let i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].classList.remove("border-primary-500", "text-primary-600");
+                tabLinks[i].classList.add("border-transparent", "text-gray-500");
+            }
+
+            // Show the current tab and add active class
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("border-primary-500", "text-primary-600");
+            evt.currentTarget.classList.remove("border-transparent", "text-gray-500");
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize rating stars
+            const stars = document.querySelectorAll('.rating-star');
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    stars.forEach((s, index) => {
+                        if (index < rating) {
+                            s.classList.remove('text-gray-300');
+                            s.classList.add('text-yellow-400');
+                        } else {
+                            s.classList.remove('text-yellow-400');
+                            s.classList.add('text-gray-300');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    <style>
+        .rating-progress {
+            height: 6px;
+            border-radius: 3px;
+        }
+        
+        .comment-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+        
+        @media (max-width: 1024px) {
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .pros-cons-item {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .pros-cons-item:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+        }
+        
+        .pros-item:before {
+            background-color: #10b981;
+        }
+        
+        .cons-item:before {
+            background-color: #ef4444;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .sticky-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .vote-chart {
+            height: 300px;
+        }
+        
+        .rating-box {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            background: white;
+        }
+        
+        .vote-bar {
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #e5e7eb;
+        }
+        
+        .vote-fill {
+            height: 100%;
+            background-color: #10b981;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <div class="w-10 h-10 rounded-lg bg-primary-500 flex items-center justify-center text-white font-bold text-xl">RH</div>
+                        <span class="ml-2 text-xl font-semibold text-primary-700">RateHub</span>
+                    </a>
+                </div>
+                
+                <div class="flex-1 max-w-2xl px-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Поиск рейтингов..." class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <button class="absolute right-0 top-0 h-full px-3 text-gray-500 hover:text-primary-600">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <button class="flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">
+                        <i class="fas fa-plus mr-2"></i>
+                        <span>Добавить</span>
+                    </button>
+                    <button class="flex items-center px-4 py-2 border border-primary-500 text-primary-500 rounded-lg hover:bg-primary-50 transition">
+                        <i class="fas fa-user mr-2"></i>
+                        <span>Войти</span>
+                    </button>
+                </div>
+            </div>
+            
+            <nav class="mt-4">
+                <ul class="flex flex-wrap gap-4 md:gap-6 text-sm md:text-base">
+                    <li><a href="index.html" class="text-gray-600 hover:text-primary-500 transition">Главная</a></li>
+                    <li><a href="category.html" class="text-gray-600 hover:text-primary-500 transition">Топы</a></li>
+                    <li><a href="category.html" class="text-gray-600 hover:text-primary-500 transition">Категории</a></li>
+                    <li><a href="ratings.html" class="text-primary-600 font-medium pb-2 border-b-2 border-primary-500">Рейтинги</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary-500 transition">Новости</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary-500 transition">О проекте</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Breadcrumbs -->
+        <div class="flex items-center text-sm text-gray-600 mb-6">
+            <a href="index.html" class="hover:text-primary-500">Главная</a>
+            <span class="mx-2">/</span>
+            <a href="category.html" class="hover:text-primary-500">Техника</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-800 font-medium">Топ 10 смартфонов 2023</span>
+        </div>
+        
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Sidebar - moved to left -->
+            <aside class="lg:w-1/4 order-first flex flex-col gap-6 sticky-sidebar">
+                <!-- Author Info -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="https://via.placeholder.com/60" alt="Author" class="w-12 h-12 rounded-full">
+                        <div>
+                            <p class="font-medium">Алексей Иванов</p>
+                            <p class="text-xs text-gray-500">Эксперт по мобильной технике</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">Автор более 24 рейтингов в категориях "Техника" и "Гаджеты". Работал в сервисном центре Samsung 5 лет.</p>
+                    <div class="flex items-center justify-between text-sm">
+                        <div class="flex items-center">
+                            <i class="fas fa-star text-yellow-400 mr-1"></i>
+                            <span>9.8</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-medal text-blue-400 mr-1"></i>
+                            <span>Топ автор</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 py-2 bg-primary-50 text-primary-600 rounded-lg hover:bg-primary-100 transition">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Подписаться
+                    </button>
+                </div>
+                
+                <!-- Similar Ratings -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Похожие рейтинги</h3>
+                    <div class="space-y-3">
+                        <a href="#" class="flex items-start gap-3 group">
+                            <img src="https://via.placeholder.com/60" alt="Rating" class="w-14 h-14 rounded-lg object-cover">
+                            <div>
+                                <p class="font-medium group-hover:text-primary-500 transition">Лучшие смартфоны до 50 000 руб.</p>
+                                <div class="flex items-center text-xs text-gray-500">
+                                    <span>4.6</span>
+                                    <i class="fas fa-star text-yellow-400 mx-1"></i>
+                                    <span>856 оценок</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-start gap-3 group">
+                            <img src="https://via.placeholder.com/60" alt="Rating" class="w-14 h-14 rounded-lg object-cover">
+                            <div>
+                                <p class="font-medium group-hover:text-primary-500 transition">Топ игровых смартфонов 2023</p>
+                                <div class="flex items-center text-xs text-gray-500">
+                                    <span>4.8</span>
+                                    <i class="fas fa-star text-yellow-400 mx-1"></i>
+                                    <span>723 оценки</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-start gap-3 group">
+                            <img src="https://via.placeholder.com/60" alt="Rating" class="w-14 h-14 rounded-lg object-cover">
+                            <div>
+                                <p class="font-medium group-hover:text-primary-500 transition">Лучшие камерофоны 2023</p>
+                                <div class="flex items-center text-xs text-gray-500">
+                                    <span>4.7</span>
+                                    <i class="fas fa-star text-yellow-400 mx-1"></i>
+                                    <span>642 оценки</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-start gap-3 group">
+                            <img src="https://via.placeholder.com/60" alt="Rating" class="w-14 h-14 rounded-lg object-cover">
+                            <div>
+                                <p class="font-medium group-hover:text-primary-500 transition">Сравнение iPhone 15 и Android</p>
+                                <div class="flex items-center text-xs text-gray-500">
+                                    <span>4.5</span>
+                                    <i class="fas fa-star text-yellow-400 mx-1"></i>
+                                    <span>587 оценок</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Popular Tags -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Популярные теги</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="#" class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#смартфоны</a>
+                        <a href="#" class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#android</a>
+                        <a href="#" class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#iphone</a>
+                        <a href="#" class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#камеры</a>
+                        <a href="#" class="px=3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#флагманы</a>
+                        <a href="#" class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#бюджетные</a>
+                        <a href="#" class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#samsung</a>
+                        <a href="#" class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#xiaomi</a>
+                    </div>
+                </div>
+                
+                <!-- Subscribe -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Подписаться в Telegram</h3>
+                    <p class="text-sm text-gray-600 mb-3">Получайте уведомления о новых рейтингах</p>
+                    <a href="#" class="w-full flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                        <i class="fab fa-telegram mr-2"></i>
+                        <span>Наш Telegram канал</span>
+                    </a>
+                </div>
+            </aside>
+            
+            <!-- Main Content -->
+            <div class="lg:w-3/4">
+                <!-- Rating Header -->
+                <div class="bg-white rounded-lg shadow p-6 mb-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                        <div>
+                            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Топ 10 смартфонов 2023</h1>
+                            <div class="flex items-center mt-2">
+                                <div class="bg-primary-100 text-primary-800 px-3 py-1 rounded-full text-sm font-medium">Техника</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                            <button class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fas fa-share-alt mr-2"></i>
+                                <span>Поделиться</span>
+                            </button>
+                            <button class="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fas fa-bookmark mr-2"></i>
+                                <span>В закладки</span>
+                            </button>
+                            <button class="flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">
+                                <i class="fas fa-plus mr-2"></i>
+                                <span>Добавить в подборку</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col md:flex-row gap-6 items-stretch">
+                        <!-- Rating Box -->
+                        <div class="rating-box flex-shrink-0 w-full md:w-1/3">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Общий рейтинг</h3>
+                            <div class="flex flex-col items-center">
+                                <div class="text-5xl font-bold text-primary-600 mb-2">4.7</div>
+                                <p class="text-gray-500 text-sm">1,245 оценок</p>
+                            </div>
+                            
+                            <div class="mt-6 flex justify-center gap-4">
+                                <button class="flex items-center justify-center w-12 h-12 bg-green-100 text-green-700 rounded-full hover:bg-green-200 transition">
+                                    <i class="fas fa-thumbs-up text-xl"></i>
+                                </button>
+                                <button class="flex items-center justify-center w-12 h-12 bg-red-100 text-red-700 rounded-full hover:bg-red-200 transition">
+                                    <i class="fas fa-thumbs-down text-xl"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1">
+                            <p class="text-gray-600 mb-4">Рейтинг лучших смартфонов 2023 года по версии экспертов и пользователей RateHub. В подборке представлены модели с лучшим соотношением цены и качества в разных ценовых категориях.</p>
+                            
+                            <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                                <div class="flex items-center">
+                                    <i class="fas fa-user mr-2 text-primary-500"></i>
+                                    <span>Алексей Иванов</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-calendar-alt mr-2 text-primary-500"></i>
+                                    <span>Обновлено 5 дней назад</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-eye mr-2 text-primary-500"></i>
+                                    <span>12.4K просмотров</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-comment-alt mr-2 text-primary-500"></i>
+                                    <span>342 комментария</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rating Navigation Tabs -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex -mb-px overflow-x-auto">
+                            <button onclick="openTab(event, 'description')" class="tab-link whitespace-nowrap py-4 px-6 text-center border-b-2 font-medium text-sm border-primary-500 text-primary-600">Описание</button>
+                            <button onclick="openTab(event, 'ratings')" class="tab-link whitespace-nowrap py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Рейтинг</button>
+                            <button onclick="openTab(event, 'specs')" class="tab-link whitespace-nowrap py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Характеристики</button>
+                            <button onclick="openTab(event, 'pros-cons')" class="tab-link whitespace-nowrap py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Плюсы и минусы</button>
+                            <button onclick="openTab(event, 'votes')" class="tab-link whitespace-nowrap py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Голосование</button>
+                            <button onclick="openTab(event, 'video')" class="tab-link whitespace-nowrap py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Видео</button>
+                            <button onclick="openTab(event, 'comments')" class="tab-link whitespace-nowrap py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Комментарии (342)</button>
+                        </nav>
+                    </div>
+                </div>
+                
+                <!-- Description Tab -->
+                <div id="description" class="tab-content active">
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">О рейтинге</h2>
+                        <div class="prose max-w-none text-gray-700">
+                            <p>Этот рейтинг составлен на основе анализа более 50 моделей смартфонов, представленных на рынке в 2023 году. Мы учитывали следующие критерии:</p>
+                            <ul class="list-disc pl-5 space-y-2 my-4">
+                                <li>Производительность (бенчмарки, тесты)</li>
+                                <li>Качество дисплея (цветопередача, яркость, частота обновления)</li>
+                                <li>Автономность (емкость батареи, оптимизация)</li>
+                                <li>Качество камер (основная, фронтальная, видео)</li>
+                                <li>Соотношение цены и качества</li>
+                                <li>Отзывы пользователей и экспертов</li>
+                            </ul>
+                            <p>В рейтинг вошли модели разных ценовых категорий: от бюджетных до флагманских. Для удобства мы разделили их на три группы:</p>
+                            <ol class="list-decimal pl-5 space-y-2 my-4">
+                                <li><strong>Бюджетные</strong> (до 20 000 руб.) - лучшие варианты для непритязательных пользователей</li>
+                                <li><strong>Средний сегмент</strong> (20 000 - 50 000 руб.) - оптимальное сочетание цены и возможностей</li>
+                                <li><strong>Флагманы</strong> (от 50 000 руб.) - максимальная производительность и инновации</li>
+                            </ol>
+                            <p>Рейтинг будет обновляться по мере выхода новых моделей и изменения рыночной ситуации. Последнее обновление: 15 ноября 2023 года.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Методология оценки</h2>
+                        <div class="prose max-w-none text-gray-700">
+                            <p>Для составления рейтинга мы использовали комплексный подход, сочетающий объективные измерения и субъективные оценки:</p>
+                            
+                            <h3 class="font-semibold mt-4">Технические тесты (60% оценки)</h3>
+                            <p>Все модели протестированы в лабораторных условиях с использованием профессионального оборудования:</p>
+                            <ul class="list-disc pl-5 space-y-2 my-2">
+                                <li>Производительность: Geekbench 6, 3DMark Wild Life</li>
+                                <li>Дисплей: Colorimeter, тесты на равномерность подсветки</li>
+                                <li>Батарея: стандартный тест автономности PCMark</li>
+                                <li>Камеры: DxOMark тесты в различных условиях освещения</li>
+                            </ul>
+                            
+                            <h3 class="font-semibold mt-4">Экспертная оценка (25% оценки)</h3>
+                            <p>Наши эксперты тестировали смартфоны в реальных условиях:</p>
+                            <ul class="list-disc pl-5 space-y-2 my-2">
+                                <li>Эргономика и удобство использования</li>
+                                <li>Качество сборки и материалов</li>
+                                <li>Программное обеспечение и интерфейс</li>
+                                <li>Дополнительные функции и экосистема</li>
+                            </ul>
+                            
+                            <h3 class="font-semibold mt-4">Отзывы пользователей (15% оценки)</h3>
+                            <p>Учитывались оценки и отзывы реальных пользователей с наших и сторонних платформ:</p>
+                            <ul class="list-disc pl-5 space-y-2 my-2">
+                                <li>Средний рейтинг на RateHub (342 оценки)</li>
+                                <li>Отзывы с маркетплейсов (Wildberries, Ozon, Яндекс.Маркет)</li>
+                                <li>Данные из тематических сообществ и форумов</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ratings Tab -->
+                <div id="ratings" class="tab-content">
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Топ 10 смартфонов 2023 года</h2>
+                        
+                        <!-- Rating Filters -->
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-sm text-gray-600">Фильтры:</span>
+                                <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    <option>Все категории</option>
+                                    <option>Бюджетные</option>
+                                    <option>Средний класс</option>
+                                    <option>Флагманы</option>
+                                </select>
+                                <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    <option>Сортировка по рейтингу</option>
+                                    <option>Сортировка по цене</option>
+                                    <option>Сортировка по дате выхода</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-600 mr-2">Показывать:</span>
+                                <div class="flex bg-gray-100 rounded-lg p-1">
+                                    <button class="px-3 py-1 rounded-lg bg-white shadow-sm text-sm font-medium">Списком</button>
+                                    <button class="px=3 py-1 rounded-lg text-sm font-medium hover:bg-gray-200 transition">Плиткой</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Rating List -->
+                        <div class="space-y-4">
+                            <!-- Rating Item 1 -->
+                            <div class="border border-gray-200 rounded-lg p-4 hover:border-primary-300 transition">
+                                <div class="flex flex-col md:flex-row gap-4">
+                                    <div class="flex-shrink-0 relative">
+                                        <img src="https://via.placeholder.com/120" alt="Samsung Galaxy S23 Ultra" class="w-24 h-24 object-contain">
+                                        <div class="absolute -top-2 -left-2 bg-primary-500 text-white text-xs font-bold px-2 py-1 rounded-full">1</div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex flex-col md:flex-row md:items-start md:justify-between">
+                                            <div>
+                                                <h3 class="font-bold text-lg">Samsung Galaxy S23 Ultra</h3>
+                                                <p class="text-gray-600 text-sm">Флагманский смартфон с лучшей камерой на рынке</p>
+                                            </div>
+                                            <div class="mt-2 md:mt-0 flex items-center">
+                                                <div class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium mr-3">9.8/10</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-3 flex flex-wrap items-center gap-4 text-sm">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-thumbs-up text-green-500 mr-1"></i>
+                                                <span>856 (92%)</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i class="fas fa-comment-alt text-gray-400 mr-1"></i>
+                                                <span>124 отзыва</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i class="fas fa-calendar-alt text-gray-400 mr-1"></i>
+                                                <span>Февраль 2023</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-3 flex flex-col gap-2">
+                                            <div class="flex items-center">
+                                                <span class="w-24 text-sm text-gray-500">Рейтинг</span>
+                                                <div class="flex">
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Rating Item 2 -->
+                            <div class="border border-gray-200 rounded-lg p-4 hover:border-primary-300 transition">
+                                <div class="flex flex-col md:flex-row gap=4">
+                                    <div class="flex-shrink-0 relative">
+                                        <img src="https://via.placeholder.com/120" alt="iPhone 15 Pro Max" class="w-24 h-24 object-contain">
+                                        <div class="absolute -top-2 -left-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">2</div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex flex-col md:flex-row md:items-start md:justify-between">
+                                            <div>
+                                                <h3 class="font-bold text-lg">iPhone 15 Pro Max</h3>
+                                                <p class="text-gray-600 text-sm">Новый флагман Apple с титановым корпусом</p>
+                                            </div>
+                                            <div class="mt-2 md:mt-0 flex items-center">
+                                                <div class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium mr-3">9.7/10</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-3 flex flex-wrap items-center gap-4 text-sm">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-thumbs-up text-green-500 mr-1"></i>
+                                                <span>742 (90%)</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i class="fas fa-comment-alt text-gray-400 mr-1"></i>
+                                                <span>98 отзывов</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i class="fas fa-calendar-alt text-gray-400 mr-1"></i>
+                                                <span>Сентябрь 2023</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-3 flex flex-col gap-2">
+                                            <div class="flex items-center">
+                                                <span class="w-24 text-sm text-gray-500">Рейтинг</span>
+                                                <div class="flex">
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                    <i class="fas fa-star-half-alt text-yellow-400"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Rating Item 3 -->
+                            <div class="border border-gray-200 rounded-lg p-4 hover:border-primary-300 transition">
+                                <div class="flex flex-col md:flex-row gap-4">
+                                    <div class="flex-shrink-0 relative">
+                                        <img src="https://via.placeholder.com/120" alt="Xiaomi 13 Pro" class="w-24 h-24 object-contain">
+                                        <div class="absolute -top-2 -left-2 bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">3</div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex flex-col md:flex-row md:items-start md:justify-between">
+                                            <div>
+                                                <h3 class="font-bold text-lg">Xiaomi 13 Pro</h3>
+                                                <p class="text-gray-600 text-sm">Лучший флагманский смартфон по соотношению цена/качество</p>
+                                            </div>
+                                            <div class="mt-2 md:mt-0 flex items-center">
+                                                <div class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium mr=3">9.5/10</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-3 flex flex-wrap items-center gap-4 text-sm">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-thumbs-up text-green-500 mr-1"></i>
+                                                <span>612 (88%)</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i class="fas fa-comment-alt text-gray-400 mr-1"></i>
+                                                <span>87 отзывов</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i class="fas fa-calendar-alt text-gray-400 mr-1"></i>
+                                                <span>Март 2023</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-3 flex flex-col gap-2">
+                                            <div class="flex items-center">
+                                                <span class="w-24 text-sm text-gray-500">Рейтинг</span>
+                                                <div class="flex">
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                    <i class="fas fa-star text-yellow-400"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- More items would go here -->
+                        </div>
+                        
+                        <div class="mt-6 flex justify-center">
+                            <button class="px-6 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Показать еще 7 смартфонов</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Specs Tab -->
+                <div id="specs" class="tab-content">
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Характеристики смартфонов</h2>
+                        
+                        <div class="grid grid-cols-1 gap-6">
+                            <!-- Comparison Table -->
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Характеристика</th>
+                                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Samsung Galaxy S23 Ultra</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">Процессор</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Snapdragon 8 Gen 2</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">Экран</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">6.8" Dynamic AMOLED 2X, 120Hz</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">Камера</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">200MP + 12MP + 10MP + 10MP</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">Батарея</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">5000 мАч</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">ОС</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Android 13</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">Память</td>
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">12/256 ГБ</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Detailed Specs -->
+                            <div>
+                                <h3 class="font-semibold text-lg mb-3">Подробные характеристики</h3>
+                                <div class="specs-grid gap-4">
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">Процессор</p>
+                                        <p class="font-medium">Snapdragon 8 Gen 2</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">Графика</p>
+                                        <p class="font-medium">Adreno 740</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">Экран</p>
+                                        <p class="font-medium">6.8" Dynamic AMOLED 2X</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">Разрешение</p>
+                                        <p class="font-medium">3088 × 1440 (500 ppi)</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">Частота обновления</p>
+                                        <p class="font-medium">1-120 Hz (адаптивная)</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">Основная камера</p>
+                                        <p class="font-medium">200 MP + 12 MP + 10 MP + 10 MP</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">Фронтальная камера</p>
+                                        <p class="font-medium">12 MP</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">Батарея</p>
+                                        <p class="font-medium">5000 мАч</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb=1">Зарядка</p>
+                                        <p class="font-medium">45W проводная, 15W беспроводная</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">ОС</p>
+                                        <p class="font-medium">Android 13 + One UI 5.1</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">Память</p>
+                                        <p class="font-medium">12 ГБ ОЗУ + 256/512 ГБ/1 ТБ</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">Защита</p>
+                                        <p class="font-medium">IP68, Gorilla Glass Victus 2</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pros & Cons Tab -->
+                <div id="pros-cons" class="tab-content">
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Плюсы и минусы Samsung Galaxy S23 Ultra</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Pros -->
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4 text-green-600 flex items-center">
+                                    <i class="fas fa-thumbs-up mr-2"></i>
+                                    <span>Преимущества</span>
+                                </h3>
+                                <ul class="space-y-3">
+                                    <li class="pros-cons-item pros-item">
+                                        <p class="font-medium">Лучшая камерa среди смартфонов</p>
+                                        <p class="text-sm text-gray-600">200-мегапиксельный сенсор с улучшенной стабилизацией</p>
+                                    </li>
+                                    <li class="pros-cons-item pros-item">
+                                        <p class="font-medium">Мощный процессор Snapdragon 8 Gen 2</p>
+                                        <p class="text-sm text-gray-600">Высокая производительность в играх и приложениях</p>
+                                    </li>
+                                    <li class="pros-cons-item pros-item">
+                                        <p class="font-medium">Яркий и качественный AMOLED-экран</p>
+                                        <p class="text-sm text-gray-600">Частота обновления до 120 Гц, поддержка HDR10+</p>
+                                    </li>
+                                    <li class="pros-cons-item pros-item">
+                                        <p class="font-medium">Отличная автономность</p>
+                                        <p class="text-sm text-gray-600">Батарея 5000 мАч с оптимизированным энергопотреблением</p>
+                                    </li>
+                                    <li class="pros-cons-item pros-item">
+                                        <p class="font-medium">S Pen в комплекте</p>
+                                        <p class="text-sm text-gray-600">Удобно для заметок и творчества</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Cons -->
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4 text-red-600 flex items-center">
+                                    <i class="fas fa-thumbs-down mr-2"></i>
+                                    <span>Недостатки</span>
+                                </h3>
+                                <ul class="space-y-3">
+                                    <li class="pros-cons-item cons-item">
+                                        <p class="font-medium">Высокая цена</p>
+                                        <p class="text-sm text-gray-600">Один из самых дорогих флагманов на рынке</p>
+                                    </li>
+                                    <li class="pros-cons-item cons-item">
+                                        <p class="font-medium">Большие габариты и вес</p>
+                                        <p class="text-sm text-gray=600">Неудобен для использования одной рукой</p>
+                                    </li>
+                                    <li class="pros-cons-item cons-item">
+                                        <p class="font-medium">Медленная зарядка</p>
+                                        <p class="text-sm text-gray-600">45W против 100+W у конкурентов</p>
+                                    </li>
+                                    <li class="pros-cons-item cons-item">
+                                        <p class="font-medium">Нет слота для карт памяти</p>
+                                        <p class="text-sm text-gray-600">Нельзя расширить встроенную память</p>
+                                    </li>
+                                    <li class="pros-cons-item cons-item">
+                                        <p class="font-medium">Глянцевый корпус</p>
+                                        <p class="text-sm text-gray-600">Собирает отпечатки пальцев и скользит в руке</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Отзывы пользователей</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="flex items-center mb-2">
+                                    <div class="flex mr-2">
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                    </div>
+                                    <span class="font-bold">5.0</span>
+                                </div>
+                                <p class="text-sm text-gray-600">"Лучший телефон, который у меня был. Камера просто потрясающая!"</p>
+                                <p class="text-xs text-gray-500 mt-2">Иван, 12 ноября 2023</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="flex items-center mb-2">
+                                    <div class="flex mr-2">
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                    </div>
+                                    <span class="font-bold">4.5</span>
+                                </div>
+                                <p class="text-sm text-gray-600">"Отличный телефон, но слишком большой и тяжелый."</p>
+                                <p class="text-xs text-gray-500 mt-2">Мария, 5 ноября 2023</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="flex items-center mb-2">
+                                    <div class="flex mr-2">
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star-half-alt text-yellow-400"></i>
+                                    </div>
+                                    <span class="font-bold">4.0</span>
+                                </div>
+                                <p class="text-sm text-gray-600">"Хороший телефон, но за эти деньги ожидал большего."</p>
+                                <p class="text-xs text-gray-500 mt=2">Алексей, 28 октября 2023</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Votes Tab -->
+                <div id="votes" class="tab-content">
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Результаты голосования</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Vote Stats -->
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4">Общая статистика</h3>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-sm font-medium text-gray-700">Положительные</span>
+                                            <span class="text-sm font-medium text-gray-700">92%</span>
+                                        </div>
+                                        <div class="vote-bar">
+                                            <div class="vote-fill" style="width: 92%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-sm font-medium text-gray-700">Отрицательные</span>
+                                            <span class="text-sm font-medium text-gray-700">8%</span>
+                                        </div>
+                                        <div class="vote-bar">
+                                            <div class="vote-fill bg-red-500" style="width: 8%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 grid grid-cols-3 gap-4 text-center">
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <div class="text-2xl font-bold text-primary-600">1,245</div>
+                                        <div class="text-sm text-gray-500">Всего оценок</div>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <div class="text-2xl font-bold text-green-600">723</div>
+                                        <div class="text-sm text-gray-500">Положительных</div>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded-lg">
+                                        <div class="text-2xl font-bold text-red-600">29</div>
+                                        <div class="text-sm text-gray-500">Отрицательных</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Vote Chart -->
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4">Распределение оценок</h3>
+                                <div class="bg-gray-50 p-4 rounded-lg vote-chart">
+                                    <div class="flex items-end justify-between h-full">
+                                        <div class="flex flex-col items-center w-1/2">
+                                            <div class="bg-green-500 w-3/4 rounded-t" style="height: 92%;"></div>
+                                            <span class="text-xs mt-1">Положительные (92%)</span>
+                                        </div>
+                                        <div class="flex flex-col items-center w-1/2">
+                                            <div class="bg-red-500 w-3/4 rounded-t" style="height: 8%;"></div>
+                                            <span class="text-xs mt-1">Отрицательные (8%)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Video Tab -->
+                <div id="video" class="tab-content">
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Видеообзоры</h2>
+                        
+                        <div class="grid grid-cols-1 gap-6">
+                            <!-- Main Video -->
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Обзор Samsung Galaxy S23 Ultra</h3>
+                                <div class="video-container">
+                                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                            
+                            <!-- Additional Videos -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h4 class="text-md font-medium mb-2">Сравнение с iPhone 15 Pro Max</h4>
+                                    <div class="video-container">
+                                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-md font-medium mb-2">Тест камеры</h4>
+                                    <div class="video-container">
+                                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Comments Tab -->
+                <div id="comments" class="tab-content">
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Комментарии (342)</h2>
+                        
+                        <!-- Comment Form -->
+                        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                            <h3 class="font-medium mb-3">Оставить комментарий</h3>
+                            <textarea class="w-full border border-gray-300 rounded-lg px-3 py=2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" rows="3" placeholder="Напишите ваш отзыв..."></textarea>
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between mt-3 gap-3">
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-600 mr-2">Оценка:</span>
+                                    <div class="flex">
+                                        <i class="fas fa-star text-gray-300 cursor-pointer hover:text-yellow-400 rating-star" data-rating="1"></i>
+                                        <i class="fas fa-star text-gray-300 cursor-pointer hover:text-yellow-400 rating-star" data-rating="2"></i>
+                                        <i class="fas fa-star text-gray-300 cursor-pointer hover:text-yellow-400 rating-star" data-rating="3"></i>
+                                        <i class="fas fa-star text-gray-300 cursor-pointer hover:text-yellow-400 rating-star" data-rating="4"></i>
+                                        <i class="fas fa-star text-gray-300 cursor-pointer hover:text-yellow-400 rating-star" data-rating="5"></i>
+                                    </div>
+                                </div>
+                                <button class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">Отправить</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Comments List -->
+                        <div class="space-y-4">
+                            <!-- Comment 1 -->
+                            <div class="bg-white border border-gray-200 rounded-lg p-4 comment-item transition">
+                                <div class="flex items-start gap-3 mb-3">
+                                    <img src="https://via.placeholder.com/40" alt="User" class="w-10 h-10 rounded-full">
+                                    <div>
+                                        <p class="font-medium">Иван Петров</p>
+                                        <div class="flex items-center">
+                                            <div class="flex mr-1">
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                            </div>
+                                            <span class="text-xs text-gray-500">5 дней назад</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 mb-3">Пользуюсь этим телефоном уже 3 месяца. Камера просто нереальная, особенно ночные снимки. Батареи хватает на полных два дня умеренного использования. Единственный минус - очень скользкий, сразу купил чехол.</p>
+                                <div class="flex items-center text-sm text-gray-500 gap-4">
+                                    <button class="flex items-center hover:text-primary-500">
+                                        <i class="fas fa-thumbs-up mr-1"></i>
+                                        <span>124</span>
+                                    </button>
+                                    <button class="flex items-center hover:text-primary-500">
+                                        <i class="fas fa-thumbs-down mr-1"></i>
+                                        <span>5</span>
+                                    </button>
+                                    <button class="flex items-center hover:text-primary-500">
+                                        <i class="fas fa-reply mr-1"></i>
+                                        <span>Ответить</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Comment 2 -->
+                            <div class="bg-white border border-gray-200 rounded-lg p-4 comment-item transition">
+                                <div class="flex items-start gap-3 mb-3">
+                                    <img src="https://via.placeholder.com/40" alt="User" class="w-10 h-10 rounded-full">
+                                    <div>
+                                        <p class="font-medium">Мария Сидорова</p>
+                                        <div class="flex items-center">
+                                            <div class="flex mr-1">
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                <i class="fas fa-star-half-alt text-yellow-400 text-sm"></i>
+                                            </div>
+                                            <span class="text-xs text-gray-500">1 неделю назад</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 mb-3">Телефон отличный, но слишком большой для женской руки. Пришлось привыкать. Камера действительно на высоте, особенно портретный режим. Автономность радует - с тяжелым использованием (игры, видео) хватает на весь день.</p>
+                                <div class="flex items-center text-sm text-gray-500 gap-4">
+                                    <button class="flex items-center hover:text-primary-500">
+                                        <i class="fas fa-thumbs-up mr-1"></i>
+                                        <span>87</span>
+                                    </button>
+                                    <button class="flex items-center hover:text-primary-500">
+                                        <i class="fas fa-thumbs-down mr-1"></i>
+                                        <span>2</span>
+                                    </button>
+                                    <button class="flex items-center hover:text-primary-500">
+                                        <i class="fas fa-reply mr-1"></i>
+                                        <span>Ответить</span>
+                                    </button>
+                                </div>
+                                
+                                <!-- Reply -->
+                                <div class="mt-4 pl-6 border-l-2 border-gray-200">
+                                    <div class="bg-gray-50 rounded-lg p-3">
+                                        <div class="flex items-start gap-3 mb-2">
+                                            <img src="https://via.placeholder.com/32" alt="User" class="w-8 h-8 rounded-full">
+                                            <div>
+                                                <p class="font-medium text-sm">Алексей Иванов (автор)</p>
+                                                <span class="text-xs text-gray-500">6 дней назад</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-gray-700 text-sm">Мария, спасибо за отзыв! Да, размер действительно может быть проблемой для некоторых пользователей. Советую попробовать режим одной руки в настройках - немного помогает.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Comment 3 -->
+                            <div class="bg-white border border-gray-200 rounded-lg p-4 comment-item transition">
+                                <div class="flex items-start gap-3 mb-3">
+                                    <img src="https://via.placeholder.com/40" alt="User" class="w-10 h-10 rounded-full">
+                                    <div>
+                                        <p class="font-medium">Дмитрий Козлов</p>
+                                        <div class="flex items-center">
+                                            <div class="flex mr-1">
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                <i class="far fa-star text-yellow-400 text-sm"></i>
+                                            </div>
+                                            <span class="text-xs text-gray-500">2 недели назад</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 mb-3">Перешел с iPhone и пока не жалею. Камера лучше, батарея держит дольше. Но интерфейс менее интуитивный, пришлось привыкать. В целом хороший телефон за свои деньги.</p>
+                                <div class="flex items-center text-sm text-gray-500 gap-4">
+                                    <button class="flex items-center hover:text-primary-500">
+                                        <i class="fas fa-thumbs-up mr-1"></i>
+                                        <span>56</span>
+                                    </button>
+                                    <button class="flex items-center hover:text-primary-500">
+                                        <i class="fas fa-thumbs-down mr-1"></i>
+                                        <span>3</span>
+                                    </button>
+                                    <button class="flex items-center hover:text-primary-500">
+                                        <i class="fas fa-reply mr-1"></i>
+                                        <span>Ответить</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex justify-center">
+                            <button class="px-6 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Показать еще</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">RateHub</h3>
+                    <p class="text-gray-400 text-sm">Платформа для создания и поиска рейтингов товаров и услуг. Мы помогаем принимать обоснованные решения.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Разделы</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Главная</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Топы</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Категории</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Рейтинги</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Новости</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Информация</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">О проекте</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Правила</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Контакты</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Реклама</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Для авторов</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Мы в соцсетях</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-primary-500 transition">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-400 transition">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-600 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-red-600 transition">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                    <div class="mt-4">
+                        <a href="#" class="inline-flex items-center text-gray-400 hover:text-white transition">
+                            <i class="fas fa-envelope mr-2"></i>
+                            <span>support@ratehub.ru</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2023 RateHub. Все права защищены.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition text-sm">Политика конфиденциальности</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition text-sm">Пользовательское соглашение</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

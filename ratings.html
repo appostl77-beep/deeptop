@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RateHub - Все рейтинги</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .sticky-sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+        }
+        
+        .rating-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .rating-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .category-tag:hover {
+            transform: scale(1.05);
+        }
+        
+        .vote-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .vote-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .vote-btn.up:hover {
+            color: #10b981;
+        }
+        
+        .vote-btn.down:hover {
+            color: #ef4444;
+        }
+        
+        .vote-active.up {
+            color: #10b981;
+        }
+        
+        .vote-active.down {
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <div class="w-10 h-10 rounded-lg bg-primary-500 flex items-center justify-center text-white font-bold text-xl">RH</div>
+                        <span class="ml-2 text-xl font-semibold text-primary-700">RateHub</span>
+                    </a>
+                </div>
+                
+                <div class="flex-1 max-w-2xl px-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Поиск рейтингов..." class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        <button class="absolute right-0 top-0 h-full px-3 text-gray-500 hover:text-primary-600">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <button class="flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">
+                        <i class="fas fa-plus mr-2"></i>
+                        <span>Добавить</span>
+                    </button>
+                    <button class="flex items-center px-4 py-2 border border-primary-500 text-primary-500 rounded-lg hover:bg-primary-50 transition">
+                        <i class="fas fa-user mr-2"></i>
+                        <span>Войти</span>
+                    </button>
+                </div>
+            </div>
+            
+            <nav class="mt-4">
+                <ul class="flex flex-wrap gap-4 md:gap-6 text-sm md:text-base">
+                    <li><a href="index.html" class="text-gray-600 hover:text-primary-500 transition">Главная</a></li>
+                    <li><a href="category.html" class="text-gray-600 hover:text-primary-500 transition">Топы</a></li>
+                    <li><a href="category.html" class="text-gray-600 hover:text-primary-500 transition">Категории</a></li>
+                    <li><a href="ratings.html" class="text-primary-600 font-medium pb-2 border-b-2 border-primary-500">Рейтинги</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary-500 transition">Новости</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary-500 transition">О проекте</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Sidebar -->
+            <aside class="lg:w-1/4 flex flex-col gap-6 sticky-sidebar">
+                <!-- Filter Section -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Фильтры</h3>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Категории</label>
+                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <option>Все категории</option>
+                            <option>Техника</option>
+                            <option>Кино</option>
+                            <option>Игры</option>
+                            <option>Книги</option>
+                            <option>Еда</option>
+                            <option>Авто</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Сортировка</label>
+                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <option>По рейтингу</option>
+                            <option>По дате</option>
+                            <option>По просмотрам</option>
+                            <option>По комментариям</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Период</label>
+                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <option>За все время</option>
+                            <option>За год</option>
+                            <option>За месяц</option>
+                            <option>За неделю</option>
+                        </select>
+                    </div>
+                    
+                    <button class="w-full py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">
+                        Применить фильтры
+                    </button>
+                </div>
+                
+                <!-- Popular Tags -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Популярные теги</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="#" class="category-tag px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#смартфоны</a>
+                        <a href="#" class="category-tag px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#игры</a>
+                        <a href="#" class="category-tag px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#фильмы</a>
+                        <a href="#" class="category-tag px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#ноутбуки</a>
+                        <a href="#" class="category-tag px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#книги</a>
+                        <a href="#" class="category-tag px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#авто</a>
+                        <a href="#" class="category-tag px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#рестораны</a>
+                        <a href="#" class="category-tag px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 transition">#путешествия</a>
+                    </div>
+                </div>
+                
+                <!-- Top Authors -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Топ авторов</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <img src="/2023/Сайты/DeepTop/image.jpg" alt="User" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <p class="font-medium">Алексей Иванов</p>
+                                <p class="text-xs text-gray-500">24 рейтинга</p>
+                            </div>
+                            <div class="ml-auto bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium">9.8</div>
+                        </div>
+                        <div class="flex items-center">
+                            <img src="https://via.placeholder.com/40" alt="User" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <p class="font-medium">Мария Петрова</p>
+                                <p class="text-xs text-gray-500">18 рейтингов</p>
+                            </div>
+                            <div class="ml-auto bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium">9.6</div>
+                        </div>
+                        <div class="flex items-center">
+                            <img src="https://via.placeholder.com/40" alt="User" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <p class="font-medium">Дмитрий Сидоров</p>
+                                <p class="text-xs text-gray-500">15 рейтингов</p>
+                            </div>
+                            <div class="ml-auto bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium">9.5</div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- Main Content -->
+            <div class="lg:w-3/4">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Все рейтинги</h1>
+                    
+                    <div class="flex items-center mt-4 md:mt-0">
+                        <span class="text-sm text-gray-600 mr-3">Показывать:</span>
+                        <div class="flex bg-gray-100 rounded-lg p-1">
+                            <button class="px-3 py-1 rounded-lg bg-white shadow-sm text-sm font-medium">Списком</button>
+                            <button class="px 3 py-1 rounded-lg text-sm font-medium hover:bg-gray-200 transition">Плиткой</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rating Tabs -->
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex -mb-px overflow-x-auto">
+                            <button onclick="openRatingTab(event, 'all-ratings')" class="tab-button whitespace-nowrap py-4 px-6 text-center border-b-2 font-medium text-sm border-primary-500 text-primary-600">Все рейтинги</button>
+                            <button onclick="openRatingTab(event, 'popular')" class="tab-button whitespace-nowrap py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Популярные</button>
+                            <button onclick="openRatingTab(event, 'recent')" class="tab-button whitespace-nowrap py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Новые</button>
+                            <button onclick="openRatingTab(event, 'top-rated')" class="tab-button whitespace-nowrap py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Лучшие</button>
+                            <button onclick="openRatingTab(event, 'discussed')" class="tab-button whitespace-nowrap py-4 px-6 text-center border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Обсуждаемые</button>
+                        </nav>
+                    </div>
+                </div>
+                
+                <!-- Ratings List -->
+                <div id="all-ratings" class="tab-content active">
+                    <div class="space-y-4">
+                        <!-- Rating Item 1 -->
+                        <div class="bg-white rounded-lg shadow p-4 rating-item transition">
+                            <div class="flex flex-col md:flex-row gap-4">
+                                <div class="flex items-start">
+                                    <div class="relative">
+                                        <img src="/2023/Сайты/DeepTop/image.jpg" alt="Rating" class="w-24 h-24 object-cover rounded-lg">
+                                        <div class="absolute -top-2 -right-2 bg-primary-500 text-white text-xs font-bold px-2 py-1 rounded-full">1</div>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                        <h3 class="font-semibold text-lg mb-1">Топ 10 смартфонов 2023</h3>
+                                        <div class="flex items-center mb-2 md:mb-0">
+                                            <div class="flex flex-col items-center mr-4">
+                                                <button class="vote-btn up text-gray-400 hover:text-green-500 focus:outline-none" onclick="vote(this, 'up')">
+                                                    <i class="fas fa-arrow-up"></i>
+                                                </button>
+                                                <span class="my-1 font-bold text-gray-700">1245</span>
+                                                <button class="vote-btn down text-gray-400 hover:text-red-500 focus:outline-none" onclick="vote(this, 'down')">
+                                                    <i class="fas fa-arrow-down"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 text-sm mb-3">Рейтинг лучших смартфонов по соотношению цена/качество от ведущих производителей</p>
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <span class="bg-primary-100 text-primary-800 px-2 py-1 rounded text-xs">Техника</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-eye mr-1"></i> 12.4K</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-comment-alt mr-1"></i> 342</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-calendar-alt mr-1"></i> 5 дней назад</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Rating Item 2 -->
+                        <div class="bg-white rounded-lg shadow p-4 rating-item transition">
+                            <div class="flex flex-col md:flex-row gap-4">
+                                <div class="flex items-start">
+                                    <div class="relative">
+                                        <img src="https://via.placeholder.com/120x80" alt="Rating" class="w-24 h-24 object-cover rounded-lg">
+                                        <div class="absolute -top-2 -right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">2</div>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                        <h3 class="font-semibold text-lg mb-1">Лучшие фильмы года</h3>
+                                        <div class="flex items-center mb-2 md:mb-0">
+                                            <div class="flex flex-col items-center mr-4">
+                                                <button class="vote-btn up text-gray-400 hover:text-green-500 focus:outline-none" onclick="vote(this, 'up')">
+                                                    <i class="fas fa-arrow-up"></i>
+                                                </button>
+                                                <span class="my-1 font-bold text-gray-700">987</span>
+                                                <button class="vote-btn down text-gray-400 hover:text-red-500 focus:outline-none" onclick="vote(this, 'down')">
+                                                    <i class="fas fa-arrow-down"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 text-sm mb-3">Самые популярные и высокооцененные фильмы 2023 года по версии кинокритиков и зрителей</p>
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">Кино</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-eye mr-1"></i> 8.7K</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-comment-alt mr-1"></i> 198</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-calendar-alt mr-1"></i> 2 недели назад</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Rating Item 3 -->
+                        <div class="bg-white rounded-lg shadow p-4 rating-item transition">
+                            <div class="flex flex-col md:flex-row gap-4">
+                                <div class="flex items-start">
+                                    <div class="relative">
+                                        <img src="https://via.placeholder.com/120x80" alt="Rating" class="w-24 h-24 object-cover rounded-lg">
+                                        <div class="absolute -top-2 -right-2 bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">3</div>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                        <h3 class="font-semibold text-lg mb-1">Игры для PS5</h3>
+                                        <div class="flex items-center mb-2 md:mb-0">
+                                            <div class="flex flex-col items-center mr-4">
+                                                <button class="vote-btn up text-gray-400 hover:text-green-500 focus:outline-none" onclick="vote(this, 'up')">
+                                                    <i class="fas fa-arrow-up"></i>
+                                                </button>
+                                                <span class="my-1 font-bold text-gray-700">856</span>
+                                                <button class="vote-btn down text-gray-400 hover:text-red-500 focus:outline-none" onclick="vote(this, 'down')">
+                                                    <i class="fas fa-arrow-down"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 text-sm mb-3">Лучшие игры для PlayStation 5 по версии игроков с рейтингами Metacritic</p>
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs">Игры</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-eye mr-1"></i> 10.2K</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-comment-alt mr-1"></i> 256</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-calendar-alt mr-1"></i> 3 недели назад</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Rating Item 4 -->
+                        <div class="bg-white rounded-lg shadow p-4 rating-item transition">
+                            <div class="flex flex-col md:flex-row gap-4">
+                                <div class="flex items-start">
+                                    <img src="https://via.placeholder.com/120x80" alt="Rating" class="w-24 h-24 object-cover rounded-lg">
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                        <h3 class="font-semibold text-lg mb-1">Книжные новинки</h3>
+                                        <div class="flex items-center mb-2 md:mb-0">
+                                            <div class="flex flex-col items-center mr-4">
+                                                <button class="vote-btn up text-gray-400 hover:text-green-500 focus:outline-none" onclick="vote(this, 'up')">
+                                                    <i class="fas fa-arrow-up"></i>
+                                                </button>
+                                                <span class="my-1 font-bold text-gray-700">543</span>
+                                                <button class="vote-btn down text-gray-400 hover:text-red-500 focus:outline-none" onclick="vote(this, 'down')">
+                                                    <i class="fas fa-arrow-down"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 text-sm mb-3">Самые ожидаемые книжные новинки этого сезона в разных жанрах</p>
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">Книги</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-eye mr-1"></i> 5.1K</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-comment-alt mr-1"></i> 87</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-calendar-alt mr-1"></i> 1 месяц назад</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Rating Item 5 -->
+                        <div class="bg-white rounded-lg shadow p-4 rating-item transition">
+                            <div class="flex flex-col md:flex-row gap-4">
+                                <div class="flex items-start">
+                                    <img src="https://via.placeholder.com/120x80" alt="Rating" class="w-24 h-24 object-cover rounded-lg">
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                                        <h3 class="font-semibold text-lg mb-1">Автомобили года</h3>
+                                        <div class="flex items-center mb-2 md:mb-0">
+                                            <div class="flex flex-col items-center mr-4">
+                                                <button class="vote-btn up text-gray-400 hover:text-green-500 focus:outline-none" onclick="vote(this, 'up')">
+                                                    <i class="fas fa-arrow-up"></i>
+                                                </button>
+                                                <span class="my-1 font-bold text-gray-700">432</span>
+                                                <button class="vote-btn down text-gray-400 hover:text-red-500 focus:outline-none" onclick="vote(this, 'down')">
+                                                    <i class="fas fa-arrow-down"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 text-sm mb-3">Лучшие новые автомобили 2023 года в разных категориях и ценовых сегментах</p>
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">Авто</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-eye mr-1"></i> 7.3K</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-comment-alt mr-1"></i> 124</span>
+                                        <span class="text-gray-500 text-xs flex items-center"><i class="fas fa-calendar-alt mr-1"></i> 2 месяца назад</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center mt-8">
+                        <button class="px-6 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Показать еще</button>
+                    </div>
+                </div>
+                
+                <!-- Popular Ratings Tab -->
+                <div id="popular" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Popular Rating Card 1 -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden rating-card transition">
+                            <div class="h-40 bg-gradient-to-r from-primary-400 to-primary-600 flex items-center justify-center text-white relative">
+                                <i class="fas fa-mobile-alt text-5xl"></i>
+                                <div class="absolute top-4 left-4 bg-white text-primary-600 text-xs font-bold px-2 py-1 rounded">Топ</div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2">Топ 10 смартфонов 2023</h3>
+                                <p class="text-gray-600 text-sm mb-3">Рейтинг лучших смартфонов по соотношению цена/качество</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="bg-primary-100 text-primary-800 px-2 py-1 rounded text-xs">Техника</span>
+                                    <div class="flex flex-col items-center">
+                                        <button class="vote-btn up text-gray-400 hover:text-green-500 focus:outline-none text-xs" onclick="vote(this, 'up')">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </button>
+                                        <span class="my-1 font-bold text-gray-700 text-sm">1245</span>
+                                        <button class="vote-btn down text-gray-400 hover:text-red-500 focus:outline-none text-xs" onclick="vote(this, 'down')">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Popular Rating Card 2 -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden rating-card transition">
+                            <div class="h-40 bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center text-white relative">
+                                <i class="fas fa-film text-5xl"></i>
+                                <div class="absolute top-4 left-4 bg-white text-blue-600 text-xs font-bold px-2 py-1 rounded">Топ</div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2">Лучшие фильмы года</h3>
+                                <p class="text-gray-600 text-sm mb-3">Самые популярные и высокооцененные фильмы 2023 года</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">Кино</span>
+                                    <div class="flex flex-col items-center">
+                                        <button class="vote-btn up text-gray-400 hover:text-green-500 focus:outline-none text-xs" onclick="vote(this, 'up')">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </button>
+                                        <span class="my-1 font-bold text-gray-700 text-sm">987</span>
+                                        <button class="vote-btn down text-gray-400 hover:text-red-500 focus:outline-none text-xs" onclick="vote(this, 'down')">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Popular Rating Card 3 -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden rating-card transition">
+                            <div class="h-40 bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center text-white relative">
+                                <i class="fas fa-gamepad text-5xl"></i>
+                                <div class="absolute top-4 left-4 bg-white text-purple-600 text-xs font-bold px-2 py-1 rounded">Топ</div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2">Игры для PS5</h3>
+                                <p class="text-gray-600 text-sm mb-3">Лучшие игры для PlayStation 5 по версии игроков</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs">Игры</span>
+                                    <div class="flex flex-col items-center">
+                                        <button class="vote-btn up text-gray-400 hover:text-green-500 focus:outline-none text-xs" onclick="vote(this, 'up')">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </button>
+                                        <span class="my-1 font-bold text-gray-700 text-sm">856</span>
+                                        <button class="vote-btn down text-gray-400 hover:text-red-500 focus:outline-none text-xs" onclick="vote(this, 'down')">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Ratings Tab -->
+                <div id="recent" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Recent Rating Card 1 -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden rating-card transition">
+                            <div class="h-40 bg-gradient-to-r from-green-400 to-green-600 flex items-center justify-center text-white relative">
+                                <i class="fas fa-laptop text-5xl"></i>
+                                <div class="absolute top-4 left-4 bg-white text-green-600 text-xs font-bold px-2 py-1 rounded">Новое</div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2">Ноутбуки для работы</h3>
+                                <p class="text-gray-600 text-sm mb-3">Лучшие ноутбуки для офисной работы и бизнеса</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Техника</span>
+                                    <div class="flex flex-col items-center">
+                                        <button class="vote-btn up text-gray-400 hover:text-green-500 focus:outline-none text-xs" onclick="vote(this, 'up')">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </button>
+                                        <span class="my-1 font-bold text-gray-700 text-sm">321</span>
+                                        <button class="vote-btn down text-gray-400 hover:text-red-500 focus:outline-none text-xs" onclick="vote(this, 'down')">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Rating Card 2 -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden rating-card transition">
+                            <div class="h-40 bg-gradient-to-r from-yellow-400 to-yellow-600 flex items-center justify-center text-white relative">
+                                <i class="fas fa-book text-5xl"></i>
+                                <div class="absolute top-4 left-4 bg-white text-yellow-600 text-xs font-bold px-2 py-1 rounded">Новое</div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2">Книжные новинки</h3>
+                                <p class="text-gray-600 text-sm mb-3">Самые ожидаемые книжные новинки этого сезона</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">Книги</span>
+                                    <div class="flex flex-col items-center">
+                                        <button class="vote-btn up text-gray-400 hover:text-green-500 focus:outline-none text-xs" onclick="vote(this, 'up')">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </button>
+                                        <span class="my-1 font-bold text-gray-700 text-sm">543</span>
+                                        <button class="vote-btn down text-gray-400 hover:text-red-500 focus:outline-none text-xs" onclick="vote(this, 'down')">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Rating Card 3 -->
+                        <div class="bg-white rounded-lg shadow overflow-hidden rating-card transition">
+                            <div class="h-40 bg-gradient-to-r from-red-400 to-red-600 flex items-center justify-center text-white relative">
+                                <i class="fas fa-car text-5xl"></i>
+                                <div class="absolute top-4 left-4 bg-white text-red-600 text-xs font-bold px-2 py-1 rounded">Новое</div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2">Автомобили года</h3>
+                                <p class="text-gray-600 text-sm mb-3">Лучшие новые автомобили 2023 года в разных категориях</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">Авто</span>
+                                    <div class="flex flex-col items-center">
+                                        <button class="vote-btn up text-gray-400 hover:text-green-500 focus:outline-none text-xs" onclick="vote(this, 'up')">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </button>
+                                        <span class="my-1 font-bold text-gray-700 text-sm">432</span>
+                                        <button class="vote-btn down text-gray-400 hover:text-red-500 focus:outline-none text-xs" onclick="vote(this, 'down')">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">О проекте</h3>
+                    <p class="text-gray-400 text-sm">RateHub — это платформа пользовательских рейтингов, где вы можете найти, оценить и обсудить лучшие товары, услуги и медиа.</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Поделиться</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:bg-blue-800 transition">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition">
+                            <i class="fab fa-telegram-plane"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Контакты</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2 text-primary-400"></i>
+                            <a href="mailto:contact@ratehub.ru" class="hover:text-white transition">contact@ratehub.ru</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-telegram mr-2 text-primary-400"></i>
+                            <a href="#" class="hover:text-white transition">@ratehub_support</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-400">
+                <p>© 2023 RateHub. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab switching function
+        function openRatingTab(evt, tabName) {
+            // Hide all tab content
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+            
+            // Remove active class from all tab buttons
+            const tabButtons = document.getElementsByClassName("tab-button");
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove("border-primary-500", "text-primary-600");
+                tabButtons[i].classList.add("border-transparent", "text-gray-500");
+            }
+            
+            // Show the current tab and add active class to the button
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.remove("border-transparent", "text-gray-500");
+            evt.currentTarget.classList.add("border-primary-500", "text-primary-600");
+        }
+        
+        // Voting function
+        function vote(button, direction) {
+            const voteContainer = button.closest('.flex.flex-col.items-center');
+            const upButton = voteContainer.querySelector('.vote-btn.up');
+            const downButton = voteContainer.querySelector('.vote-btn.down');
+            const countElement = voteContainer.querySelector('span');
+            
+            // Reset all active states
+            upButton.classList.remove('vote-active', 'text-green-500');
+            downButton.classList.remove('vote-active', 'text-red-500');
+            
+            // Get current count
+            let count = parseInt(countElement.textContent);
+            
+            // Check if already voted in this direction
+            if (button.classList.contains('vote-active')) {
+                // Remove vote
+                button.classList.remove('vote-active');
+                if (direction === 'up') {
+                    button.classList.remove('text-green-500');
+                    count--;
+                } else {
+                    button.classList.remove('text-red-500');
+                    count++;
+                }
+            } else {
+                // Check if voted in opposite direction
+                if (direction === 'up' && downButton.classList.contains('vote-active')) {
+                    downButton.classList.remove('vote-active', 'text-red-500');
+                    count += 2; // Remove downvote and add upvote
+                } else if (direction === 'down' && upButton.classList.contains('vote-active')) {
+                    upButton.classList.remove('vote-active', 'text-green-500');
+                    count -= 2; // Remove upvote and add downvote
+                } else {
+                    // Simple vote
+                    if (direction === 'up') {
+                        count++;
+                    } else {
+                        count--;
+                    }
+                }
+                
+                // Add active class
+                button.classList.add('vote-active');
+                if (direction === 'up') {
+                    button.classList.add('text-green-500');
+                } else {
+                    button.classList.add('text-red-500');
+                }
+            }
+            
+            // Update count
+            countElement.textContent = count;
+        }
+        
+        // Initialize first tab as active
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("all-ratings").classList.add("active");
+        });
+    </script>
+</body>
+</html>
